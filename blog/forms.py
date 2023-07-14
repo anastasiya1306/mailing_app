@@ -7,6 +7,7 @@ class BlogForm(forms.ModelForm):
     class Meta:
         model = Blog
         fields = '__all__'
+        exclude = ('slug', 'count_views',)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
