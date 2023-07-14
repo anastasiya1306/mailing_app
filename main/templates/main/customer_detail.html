@@ -1,0 +1,27 @@
+{% extends 'main/base.html' %}
+{% block content %}
+    <div class="cool">
+        <div class="card">
+            <div class="card-body">
+                <table class="table">
+                    <tr>
+                        <td>ФИО</td>
+                        <td>{{ object.fullname }}</td>
+                    </tr>
+                    <tr>
+                        <td>Контактный email</td>
+                        <td>{{ object.email }}</td>
+                    </tr>
+                    <tr>
+                        <td>Комментарий</td>
+                        <td>{{ object.comment }}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'main:customer_list' %}" class="btn btn-primary"><< Назад</a>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
