@@ -7,3 +7,4 @@ transliterate
 pillow
 django_crontab
 redis
+python-dotenv
