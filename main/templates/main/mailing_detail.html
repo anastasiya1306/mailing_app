@@ -17,6 +17,13 @@
                     </tr>
                 </table>
             </div>
+            <a href="{% url 'main:set_mailing_status' object.pk %}" class="btn btn-outline-primary">
+                {% if object.CREATED %}
+                    Отключить рассылку
+                {% else %}
+                    Включить рассылку
+                {% endif %}
+            </a>
             <div class="card-footer">
                 <a href="{% url 'main:mailing_list' %}" class="btn btn-primary"><< Назад</a>
             </div>

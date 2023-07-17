@@ -58,7 +58,7 @@ class Mailing(models.Model):
     created_by = models.ForeignKey('users.User', on_delete=models.CASCADE, verbose_name='Создатель', **NULLABLE)
 
     def __str__(self):
-        return self.message
+        return self.message.subject
 
     class Meta:
         verbose_name = 'Рассылка'
@@ -80,7 +80,7 @@ class Attempt(models.Model):
     server_response = models.TextField(**NULLABLE, verbose_name='Ответ почтового сервера')
 
     def __str__(self):
-        return self.server_response
+        return self.mailing.message.subject
 
     class Meta:
         verbose_name = 'Статистика'

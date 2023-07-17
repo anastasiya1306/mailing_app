@@ -1,12 +1,14 @@
 from random import sample
 import django
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse_lazy
+from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse_lazy, reverse
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from blog.models import Blog
 from main.forms import CustomerForm, MessageForm
 from main.models import Customer, Message, Mailing, Attempt
+from main.services import send_email
 
 
 class IndexView(TemplateView):
@@ -18,10 +20,9 @@ class IndexView(TemplateView):
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
         context_data['mailing_count'] = Mailing.objects.all().count()
-        context_data['active_mailing_count'] = Mailing.objects.filter(status=Mailing.LAUNCHED).count()
+        context_data['active_mailing_count'] = Mailing.objects.filter(status=Mailing.CREATED).count()
         context_data['count_unique_clients'] = Customer.objects.filter(is_active=True).count()
-        blog_list = list(Blog.objects.all())
-        context_data['blog_list'] = sample(blog_list, min(3, len(blog_list)))
+        context_data['blog_list'] = Blog.objects.all().order_by('?')[:3]
         return context_data
 
 
@@ -92,6 +93,12 @@ class MailingCreateView(LoginRequiredMixin, CreateView):
     model = Mailing
     fields = ('mailing_time', 'message', 'frequency', 'status', 'created_by')
     success_url = reverse_lazy('main:mailing_list')
+    try:
+        for mail in Mailing.objects.all():
+            if mail.status == Mailing.CREATED:
+                send_email(Mailing.DAILY)
+    except django.db.utils.ProgrammingError:
+        print('ProgrammingError')
 
 
 class MailingUpdateView(LoginRequiredMixin, UpdateView):
@@ -118,3 +125,15 @@ class AttemptListView(LoginRequiredMixin, ListView):
 
 class AttemptDetailView(LoginRequiredMixin, DetailView):
     model = Attempt
+
+
+def set_mailing_status(request, pk):
+    """Отключение рассылки"""
+    mailing_item = get_object_or_404(Mailing, pk=pk)
+    if mailing_item.status == Mailing.CREATED:
+        mailing_item.status = Mailing.COMPLETED
+        mailing_item.save()
+    else:
+        mailing_item.status = Mailing.CREATED
+        mailing_item.save()
+    return redirect(reverse('main:mailing_list'))
