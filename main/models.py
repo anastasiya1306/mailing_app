@@ -7,6 +7,8 @@ class Customer(models.Model):
     email = models.EmailField(max_length=100, verbose_name='Контактный email')
     fullname = models.CharField(max_length=150, verbose_name='ФИО')
     comment = models.TextField(verbose_name='Комментарий', **NULLABLE)
+    created_by = models.ForeignKey('users.User', on_delete=models.CASCADE, verbose_name='Создатель', **NULLABLE)
+    is_active = models.BooleanField(default=True, verbose_name='Активность')
 
     def __str__(self):
         return f'{self.email}'
@@ -53,6 +55,7 @@ class Mailing(models.Model):
     message = models.ForeignKey(Message, on_delete=models.CASCADE, verbose_name='Сообщение')
     frequency = models.CharField(max_length=100, choices=FREQUENCY_CHOICES, verbose_name='Периодичность')
     status = models.CharField(max_length=50, default=CREATED, choices=SELECT_STATUS, verbose_name='Статус рассылки')
+    created_by = models.ForeignKey('users.User', on_delete=models.CASCADE, verbose_name='Создатель', **NULLABLE)
 
     def __str__(self):
         return self.message
@@ -62,4 +65,23 @@ class Mailing(models.Model):
         verbose_name_plural = 'Рассылки'
 
 
+class Attempt(models.Model):
+    DELIVERED = 'доставлено'
+    NOT_DELIVERED = 'не доставлено'
 
+    SELECT_STATUS = (
+        (DELIVERED, 'доставлено'),
+        (NOT_DELIVERED, 'не доставлено'),
+    )
+
+    time_mailing = models.DateTimeField(auto_now_add=True, verbose_name='Дата и время последней попытки')
+    status = models.CharField(choices=SELECT_STATUS, verbose_name='Статус попытки')
+    mailing = models.ForeignKey(Mailing, on_delete=models.CASCADE, verbose_name='Рассылка')
+    server_response = models.TextField(**NULLABLE, verbose_name='Ответ почтового сервера')
+
+    def __str__(self):
+        return self.server_response
+
+    class Meta:
+        verbose_name = 'Статистика'
+        verbose_name_plural = 'Статистики'

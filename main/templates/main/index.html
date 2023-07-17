@@ -1,18 +1,25 @@
 {% extends 'main/base.html' %}
 
 {% block content %}
-    <div class="row gy-5">
-        <h5> Сервис рассылки сообщений</h5>
-        <div class="col">
-            <div class="card shadow-sm text-center" style="background: #e0e0e0">
-                <figure class="p-3 mb-0">
-                    Создано рассылок: #.<br>
-                    <br>
-                    Количество активных рассылок: #.<br>
-                    <br>
-                    Количество уникальных клиентов: #
-                </figure>
-            </div>
-        </div>
-    </div>
+    <div class="col-xs-12 col-md-7">
+  <table class="table table-striped auto__table text-left">
+    <tbody>
+      <tr>
+        <td colspan="2">Количество рассылок всего:</td>
+        <td colspan="2">{{ mailing_count }}</td>
+      </tr>
+      <tr>
+        <td colspan="2">Количество активных рассылок</td>
+        <td colspan="2">{{ active_mailing_count }}</td>
+      </tr>
+      <tr>
+        <td colspan="2">Количество уникальных клиентов для рассылок</td>
+        <td colspan="2">{{ count_unique_clients }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+    {% for object in blog_list %}
+        {% include 'blog/includes/inc_blog_card.html' %}
+    {% endfor %}
 {% endblock %}

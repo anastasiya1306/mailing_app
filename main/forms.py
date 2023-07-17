@@ -13,7 +13,7 @@ class StyleFormMixin:
 class CustomerForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Customer
-        fields = ('fullname', 'email', 'comment')
+        fields = ('fullname', 'email', 'comment', 'created_by')
 
 
 class MessageForm(StyleFormMixin, forms.ModelForm):
