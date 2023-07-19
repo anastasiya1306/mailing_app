@@ -11,9 +11,12 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / '.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -38,6 +41,7 @@ INSTALLED_APPS = [
     'main',
     'blog',
     'users',
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -127,20 +131,35 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-#настройка хост-сервера электронной почты в для письма с подтверждением
+# настройка хост-сервера электронной почты в для письма с подтверждением
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.yandex.ru'
-EMAIL_PORT = 465   #порт SMTP для yandex
-EMAIL_HOST_USER = 'anastasiyab2010@yandex.ru'
-EMAIL_HOST_PASSWORD = 'fynqddtgukqrmpez'    #полученный пароль для приложения
+EMAIL_PORT = 465  # порт SMTP для yandex
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')  # полученный пароль для приложения
 EMAIL_USE_TLS = False
-EMAIL_USE_SSL = True  #использовать защищенное соединение
+EMAIL_USE_SSL = True  # использовать защищенное соединение
 
-EMAIL_SERVER = EMAIL_HOST_USER    #email сервера
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER    #с какого адреса будут отправляться письма
-EMAIL_ADMIN = EMAIL_HOST_USER    #email, куда будут все данные приходить с сайта
+EMAIL_SERVER = EMAIL_HOST_USER  # email сервера
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER  # с какого адреса будут отправляться письма
+EMAIL_ADMIN = EMAIL_HOST_USER  # email, куда будут все данные приходить с сайта
+
+CRONJOBS = [
+    ('0 12 * * *', 'main.services.send_email', ['раз в день']), #запускает в 12:00 каждый день
+    ('0 12 * * 1', 'main.services.send_email', ['раз в неделю']),  #запускает в 12:00 каждый пн
+    ('0 12 1 * *', 'main.services.send_email', ['раз в месяц']), #запускает в 12:00 каждый месяц
+]
 
 AUTH_USER_MODEL = 'users.User'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_URL = '/users/'
+
+CACHE_ENABLED = os.getenv('CACHE_ENABLED')
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": os.getenv('CACHE_LOCATION')
+    }
+}
