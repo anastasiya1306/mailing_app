@@ -1,5 +1,5 @@
-from random import sample
 import django
+from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
@@ -31,6 +31,12 @@ class CustomerListView(LoginRequiredMixin, ListView):
     extra_context = {
         'title': 'Клиенты'
     }
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if self.request.user.has_perm('main.view_customer'):
+            return queryset
+        return Customer.objects.filter(created_by=self.request.user)
 
 
 class CustomerDetailView(LoginRequiredMixin, DetailView):
@@ -88,15 +94,22 @@ class MailingListView(LoginRequiredMixin, ListView):
         'title': 'Рассылки'
     }
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if self.request.user.has_perm('main.view_mailing'):
+            return queryset
+
+        return queryset.filter(created_by=self.request.user)
+
 
 class MailingCreateView(LoginRequiredMixin, CreateView):
     model = Mailing
     fields = ('mailing_time', 'message', 'frequency', 'status', 'created_by')
     success_url = reverse_lazy('main:mailing_list')
     try:
-        for mail in Mailing.objects.all():
-            if mail.status == Mailing.CREATED:
-                send_email(Mailing.DAILY)
+        for send in Mailing.objects.all():
+            if send.status == Mailing.CREATED:
+                send_email(Mailing.ONCE)
     except django.db.utils.ProgrammingError:
         print('ProgrammingError')
 
@@ -126,7 +139,7 @@ class AttemptListView(LoginRequiredMixin, ListView):
 class AttemptDetailView(LoginRequiredMixin, DetailView):
     model = Attempt
 
-
+@permission_required(perm='main.set_mailing_status')
 def set_mailing_status(request, pk):
     """Отключение рассылки"""
     mailing_item = get_object_or_404(Mailing, pk=pk)
@@ -137,3 +150,15 @@ def set_mailing_status(request, pk):
         mailing_item.status = Mailing.CREATED
         mailing_item.save()
     return redirect(reverse('main:mailing_list'))
+
+
+@permission_required(perm='main.set_is_active')
+def set_is_active(request, pk):
+    "Статус пользователя"
+    customer_item = get_object_or_404(Customer, pk=pk)
+    if customer_item.is_active:
+        customer_item.is_active = False
+    else:
+        customer_item.is_active = True
+    customer_item.save()
+    return redirect(reverse('main:customer_list'))

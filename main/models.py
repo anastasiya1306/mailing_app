@@ -31,11 +31,13 @@ class Message(models.Model):
 
 
 class Mailing(models.Model):
+    ONCE = 'раз'
     DAILY = 'раз в день'
     WEEKLY = 'раз в неделю'
     MONTHLY = 'раз в месяц'
 
     FREQUENCY_CHOICES = [
+        (ONCE, 'раз'),
         (DAILY, 'раз в день'),
         (WEEKLY, 'раз в неделю'),
         (MONTHLY, 'раз в месяц'),

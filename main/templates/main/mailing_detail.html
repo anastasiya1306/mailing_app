@@ -17,13 +17,10 @@
                     </tr>
                 </table>
             </div>
-            <a href="{% url 'main:set_mailing_status' object.pk %}" class="btn btn-outline-primary">
-                {% if object.CREATED %}
-                    Отключить рассылку
-                {% else %}
-                    Включить рассылку
-                {% endif %}
-            </a>
+            {% if perms.main.set_mailing_status or user.is_superuser %}
+                <a class="btn btn-info" href="{% url 'mailing_app:set_mailing_status' object.pk %}">Отключить
+                    рассылку</a>
+            {% endif %}
             <div class="card-footer">
                 <a href="{% url 'main:mailing_list' %}" class="btn btn-primary"><< Назад</a>
             </div>
