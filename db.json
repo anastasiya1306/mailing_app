@@ -1,0 +1,183 @@
+[
+  {
+    "model": "main.customer",
+    "pk": 1,
+    "fields": {
+      "email": "anastasiyab2010@yandex.ru",
+      "fullname": "Бурых Анастасия Павловна",
+      "comment": "Первый комментарий",
+      "created_by": 2,
+      "is_active": true
+    }
+  },
+  {
+    "model": "main.customer",
+    "pk": 2,
+    "fields": {
+      "email": "vinston768@gmail.com",
+      "fullname": "Достоевский Федор Михаилович",
+      "comment": "Писатель",
+      "created_by": 2,
+      "is_active": true
+    }
+  },
+  {
+    "model": "main.customer",
+    "pk": 3,
+    "fields": {
+      "email": "burykh_2000@mail.ru",
+      "fullname": "Джоан Кэтлин Роулинг",
+      "comment": "Если хочешь по-настоящему узнать человека, присмотрись к тому, как он обращается с теми, кто слабее его, а не с теми, кто ему равен",
+      "created_by": 4,
+      "is_active": true
+    }
+  },
+  {
+    "model": "main.message",
+    "pk": 1,
+    "fields": {
+      "subject": "Когда сомневаешься — читай. Грустишь — читай. Счастлив — читай",
+      "body": "Каждую неделю рассказываем о самых-самых книгах. Чтобы рассылка получилась полезной и вдохновляющей, над ней трудится весь контент-отдел. Мы вытаскиваем из книг самые важные смыслы, советы и цитаты, приправляем картинками и своей любовью — и отправляем вам."
+    }
+  },
+  {
+    "model": "main.message",
+    "pk": 3,
+    "fields": {
+      "subject": "Подарки на День Студента!",
+      "body": "Сегодня два праздника: Татьянин День и День Студента! С чем вас и поздравляем. В связи с этим, при заказе от 999 рублей, вы можете получить подарок: сборник 3 томов Анны Карениной."
+    }
+  },
+  {
+    "model": "main.message",
+    "pk": 4,
+    "fields": {
+      "subject": "Почему нужно купить подписку у mybook.ru",
+      "body": "Читайте где угодно. Начните на компьютере дома, продолжайте с планшетом в дороге. MyBook полностью синхронизирует книги и позицию чтения. Месячная подписка стоит 149 рублей и в нее входит более 50000 книг."
+    }
+  },
+  {
+    "model": "main.mailing",
+    "pk": 3,
+    "fields": {
+      "mailing_time": "19:50:00",
+      "message": 3,
+      "frequency": "раз в день",
+      "status": "Завершена",
+      "created_by": 2
+    }
+  },
+  {
+    "model": "main.mailing",
+    "pk": 4,
+    "fields": {
+      "mailing_time": "20:12:00",
+      "message": 1,
+      "frequency": "раз в день",
+      "status": "Завершена",
+      "created_by": 2
+    }
+  },
+  {
+    "model": "main.mailing",
+    "pk": 6,
+    "fields": {
+      "mailing_time": "20:33:00",
+      "message": 4,
+      "frequency": "раз в день",
+      "status": "Завершена",
+      "created_by": 2
+    }
+  },
+  {
+    "model": "main.mailing",
+    "pk": 7,
+    "fields": {
+      "mailing_time": "20:43:00",
+      "message": 3,
+      "frequency": "раз в день",
+      "status": "Завершена",
+      "created_by": 4
+    }
+  },
+  {
+    "model": "main.attempt",
+    "pk": 5,
+    "fields": {
+      "time_mailing": "2023-07-17T17:07:06.117Z",
+      "status": "доставлено",
+      "mailing": 3,
+      "server_response": "['anastasiyab2010@yandex.ru', 'vinston768@gmail.com', 'burykh_2000@mail.ru']"
+    }
+  },
+  {
+    "model": "main.attempt",
+    "pk": 6,
+    "fields": {
+      "time_mailing": "2023-07-17T17:19:28.512Z",
+      "status": "доставлено",
+      "mailing": 4,
+      "server_response": "['anastasiyab2010@yandex.ru', 'vinston768@gmail.com', 'burykh_2000@mail.ru']"
+    }
+  },
+  {
+    "model": "main.attempt",
+    "pk": 7,
+    "fields": {
+      "time_mailing": "2023-07-17T17:32:43.908Z",
+      "status": "доставлено",
+      "mailing": 6,
+      "server_response": "['anastasiyab2010@yandex.ru', 'vinston768@gmail.com', 'burykh_2000@mail.ru']"
+    }
+  },
+  {
+    "model": "main.attempt",
+    "pk": 8,
+    "fields": {
+      "time_mailing": "2023-07-17T17:46:14.514Z",
+      "status": "доставлено",
+      "mailing": 6,
+      "server_response": "['anastasiyab2010@yandex.ru', 'vinston768@gmail.com', 'burykh_2000@mail.ru']"
+    }
+  },
+  {
+    "model": "main.attempt",
+    "pk": 10,
+    "fields": {
+      "time_mailing": "2023-07-17T18:53:58.241Z",
+      "status": "доставлено",
+      "mailing": 7,
+      "server_response": "['anastasiyab2010@yandex.ru', 'vinston768@gmail.com', 'burykh_2000@mail.ru']"
+    }
+  },
+  {
+    "model": "main.attempt",
+    "pk": 13,
+    "fields": {
+      "time_mailing": "2023-07-17T20:19:59.331Z",
+      "status": "доставлено",
+      "mailing": 6,
+      "server_response": "['anastasiyab2010@yandex.ru', 'vinston768@gmail.com', 'burykh_2000@mail.ru']"
+    }
+  },
+  {
+    "model": "main.attempt",
+    "pk": 14,
+    "fields": {
+      "time_mailing": "2023-07-17T20:20:00.314Z",
+      "status": "доставлено",
+      "mailing": 4,
+      "server_response": "['anastasiyab2010@yandex.ru', 'vinston768@gmail.com', 'burykh_2000@mail.ru']"
+    }
+  },
+  {
+    "model": "main.attempt",
+    "pk": 15,
+    "fields": {
+      "time_mailing": "2023-07-17T20:28:20.451Z",
+      "status": "доставлено",
+      "mailing": 6,
+      "server_response": "['anastasiyab2010@yandex.ru', 'vinston768@gmail.com', 'burykh_2000@mail.ru']"
+    }
+  }
+]
